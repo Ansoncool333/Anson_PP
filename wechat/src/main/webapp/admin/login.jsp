@@ -20,7 +20,7 @@
 
         // ensure user is for this application
         try {
-            GeliUser u = dao.find(GeliUser.class, userId);
+            User u = dao.find(User.class, userId);
             u.setLoginAt(now);
             dao.update(u, "loginAt");
         } catch (org.springframework.dao.EmptyResultDataAccessException ex) {

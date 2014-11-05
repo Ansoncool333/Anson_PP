@@ -16,5 +16,43 @@
     <context:component-scan base-package="cn.anson.wechat.service">
         <context:include-filter type="regex" expression=".*" />
     </context:component-scan>
+    
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/wechat"/>
+<!--     <jee:jndi-lookup id="idGenDataSource" jndi-name="jdbc/wechat"/> -->
+    
+    <!-- 配置hibernate相关信息 -->  
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"/>  
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                <prop key="hibernate.hbm2ddl.auto">update</prop>  
+            </props>  
+        </property>  
+          
+            <!-- 以下列表写入实体类 -->  
+        <property name="packagesToScan">  
+            <list>
+            	<value>cn.anson.wechat.entity</value>
+			</list>  
+        </property>  
+    </bean>  
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory"/>  
+    </bean>  
+    <!-- 使用annotation定义事务 -->  
+    <tx:annotation-driven transaction-manager="transactionManager" />  
+<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager">   -->
+<!-- 	  <tx:attributes>   -->
+<!-- 	    <tx:method name="list*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="page*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="count*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="exists*" read-only="true" propagation="NOT_SUPPORTED" /> -->
+<!--             <tx:method name="*" propagation="REQUIRED" /> -->
+<!-- 	  </tx:attributes>   -->
+<!-- 	</tx:advice>  -->
 
 </beans>

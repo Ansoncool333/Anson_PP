@@ -10,13 +10,11 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="cn.pconline.best.web"/>
-    <context:component-scan base-package="org.gelivable.webmvc"/>
-    <context:component-scan base-package="org.gelivable.tool"/>
+    <context:component-scan base-package="cn.anson.wechat.service"/>
 
-    <bean id="geliWebHandler" class="org.gelivable.webmvc.GeliWebHandler"/>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" 
-        p:defaultHandler-ref="geliWebHandler"/>
+<!--     <bean id="geliWebHandler" class="org.gelivable.webmvc.GeliWebHandler"/> -->
+<!--     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"  -->
+<!--         p:defaultHandler-ref="geliWebHandler"/> -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 

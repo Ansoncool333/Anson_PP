@@ -72,21 +72,6 @@
        <artifactId>hibernate-core</artifactId>
        <version>3.6.4.Final</version>
     </dependency>
-    <dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-annotations</artifactId>
-       <version>3.4.0.GA</version>
-    </dependency>
-    <dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-commons-annotations</artifactId>
-       <version>3.2.0.Final</version>
-    </dependency>
-    <dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-entitymanager</artifactId>
-       <version>3.6.4.Final</version>
-    </dependency>
   </dependencies>
   <build>
     <finalName>wechat</finalName>

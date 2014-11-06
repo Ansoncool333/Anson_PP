@@ -17,6 +17,13 @@
         <context:include-filter type="regex" expression=".*" />
     </context:component-scan>
     
+    <!-- 配置数据库连接 -->  
+<!--     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">   -->
+<!--         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>   -->
+<!--         <property name="url" value="jdbc:mysql://localhost:3306/wechat?usingUnicode=true&amp;characterEncoding=utf-8"/>   -->
+<!--         <property name="username" value="Ansoncool333"/>   -->
+<!--         <property name="password" value="Ansoncool333"/>   -->
+<!--     </bean> -->
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/wechat"/>
 <!--     <jee:jndi-lookup id="idGenDataSource" jndi-name="jdbc/wechat"/> -->
     
@@ -42,17 +49,17 @@
         <property name="sessionFactory" ref="sessionFactory"/>  
     </bean>  
     <!-- 使用annotation定义事务 -->  
-    <tx:annotation-driven transaction-manager="transactionManager" />  
-<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager">   -->
-<!-- 	  <tx:attributes>   -->
-<!-- 	    <tx:method name="list*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="page*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="count*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="exists*" read-only="true" propagation="NOT_SUPPORTED" /> -->
-<!--             <tx:method name="*" propagation="REQUIRED" /> -->
-<!-- 	  </tx:attributes>   -->
-<!-- 	</tx:advice>  -->
+<!--     <tx:annotation-driven transaction-manager="transactionManager" />   -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
+	  <tx:attributes>  
+	    <tx:method name="list*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="page*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="count*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="exists*" read-only="true" propagation="NOT_SUPPORTED" />
+            <tx:method name="*" propagation="REQUIRED" />
+	  </tx:attributes>  
+	</tx:advice> 
 
 </beans>

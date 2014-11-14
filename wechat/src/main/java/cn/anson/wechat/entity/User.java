@@ -2,20 +2,15 @@ package cn.anson.wechat.entity;
 
 import java.util.Date;
 
+import javax.persistence.Id;
+
+import org.hibernate.annotations.Entity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import cn.anson.wechat.annotation.Display;
-import cn.anson.wechat.annotation.Entity;
-import cn.anson.wechat.annotation.Id;
 import cn.anson.wechat.annotation.Label;
 
-
-/**
- *
- * @author qhg
- */
-@Entity(tableName="user")
 @Label("”√ªß±Ì")
 public class User {
 

@@ -12,8 +12,8 @@ public class MybatisDao {
 	
 	static{
 	    try{
-	        reader    = Resources.getResourceAsReader("Configuration.xml");
 	        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+	        reader    = Resources.getResourceAsReader("Configuration.xml");
 		}catch(Exception e){
 		    e.printStackTrace();
 		}

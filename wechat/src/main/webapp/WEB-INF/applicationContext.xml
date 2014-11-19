@@ -16,50 +16,50 @@
     <context:component-scan base-package="cn.anson.wechat.service">
         <context:include-filter type="regex" expression=".*" />
     </context:component-scan>
-    
-    <!-- 配置数据库连接 -->  
-<!--     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">   -->
-<!--         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>   -->
-<!--         <property name="url" value="jdbc:mysql://localhost:3306/wechat?usingUnicode=true&amp;characterEncoding=utf-8"/>   -->
-<!--         <property name="username" value="Ansoncool333"/>   -->
-<!--         <property name="password" value="Ansoncool333"/>   -->
-<!--     </bean> -->
-    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/wechat"/>
-<!--     <jee:jndi-lookup id="idGenDataSource" jndi-name="jdbc/wechat"/> -->
-    
-    <!-- 配置hibernate相关信息 -->  
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
-        <property name="dataSource" ref="dataSource"/>  
-        <property name="hibernateProperties">  
-            <props>  
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
-                <prop key="hibernate.show_sql">true</prop>  
-                <prop key="hibernate.hbm2ddl.auto">update</prop>  
-            </props>  
-        </property>  
-          
-            <!-- 以下列表写入实体类 -->  
-        <property name="packagesToScan">  
+    <!-- Service注入 end-->
+    <bean id="sysConfig" class="cn.anson.wechat.util.SysConfig">
+        <constructor-arg value="#{@props}"/>
+    </bean>
+    <jee:jndi-lookup id="props" jndi-name="java:comp/env/props"/>
+    <!-- 从resin配置文件加载properties -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
             <list>
-            	<value>cn.anson.wechat.entity</value>
-			</list>  
-        </property>  
-    </bean>  
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
-        <property name="sessionFactory" ref="sessionFactory"/>  
-    </bean>  
-    <!-- 使用annotation定义事务 -->  
-<!--     <tx:annotation-driven transaction-manager="transactionManager" />   -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
-	  <tx:attributes>  
-	    <tx:method name="list*" read-only="true" propagation="NOT_SUPPORTED" />
+                <!-- 加载wechat_envirement.properties，在resin配置xml里定义  -->
+                <value>file:#{@props}</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound"  value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="valueSeparator"  value=":=" />
+    </bean>
+    
+    <!-- 配置数据库连接  从resin读取jndi资源 -->  
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/wechat"/>
+    <jee:jndi-lookup id="idGenDataSource" jndi-name="jdbc/wechat"/>
+    
+    <!-- 注解方式配置spring事务  start-->  
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="list*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="page*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="count*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="exists*" read-only="true" propagation="NOT_SUPPORTED" />
             <tx:method name="*" propagation="REQUIRED" />
-	  </tx:attributes>  
-	</tx:advice> 
+        </tx:attributes>
+    </tx:advice>
+    <!-- 切面配置事务 -->
+    <aop:config>
+        <aop:pointcut id="wechatService" expression="execution(* cn.anson.wechat.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="wechatService" />
+    </aop:config>
+    <!-- 注解方式配置spring事务  end-->
+    <!-- 使用CGLib动态代理技术织入增强，如切面没有声明接口，则spring将自动使用CGLib动态代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 </beans>

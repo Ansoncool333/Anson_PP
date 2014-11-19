@@ -65,12 +65,6 @@
 		<artifactId>slf4j-nop</artifactId>
 		<version>1.5.2</version>
 	</dependency>
-	<!--hibernate配置-->
-    <dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-core</artifactId>
-       <version>3.6.4.Final</version>
-    </dependency>
     <!-- mybatis配置 -->
     <dependency>    
 	    <groupId>org.mybatis</groupId>
@@ -81,6 +75,12 @@
 		<groupId>org.mybatis</groupId>
 		<artifactId>mybatis</artifactId>
 		<version>3.2.7</version>
+	</dependency>
+	<!-- 切面织入器-->
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjweaver</artifactId>
+	    <version>1.7.1</version>
 	</dependency>
   </dependencies>
   <build>

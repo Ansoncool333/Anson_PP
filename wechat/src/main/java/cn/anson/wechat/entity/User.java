@@ -44,9 +44,4 @@ public class User {
 		this.loginAt = loginAt;
 	}
 
-    public String display() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(userId).append('-').append(name);
-        return buf.toString();
-    }
 }

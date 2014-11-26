@@ -38,6 +38,25 @@
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/wechat"/>
     <jee:jndi-lookup id="idGenDataSource" jndi-name="jdbc/wechat"/>
     
+    <!--MyBatis integration with Spring as define sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="cn.anson.wechat.entity" />
+		<property name="configLocation" value="classpath:mybatis-configuration.xml"/>
+		<!-- <property name="mapperLocations" value="classpath*:cn/com/ecointel/roomyi/authority/persistence/*.xml" /> -->
+	</bean>
+	
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.anson.wechat.mapper" />
+<!-- 		<property name="markerInterface" value="cn.anson.wechat.mapper.BaseMapper"/> 指定接口-->
+<!-- 		<property name="annotationClass" value="cn.anson.wechat.mapper.MybatisMapper"/> 自定义注解使用-->
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" /><!-- 单数据源可不定义-->
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" p:sqlSessionFactory-ref="sqlSessionFactory"/>
+    
+    <bean class="cn.anson.wechat.util.SpringCtxUtils"/>
+    
     <!-- 注解方式配置spring事务  start-->  
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
         <property name="dataSource" ref="dataSource" />

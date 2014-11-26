@@ -19,6 +19,6 @@
     </environments>
     
     <mappers>
-        <mapper resource="\WEB-INF\entity\User.xml"/>
+        <mapper resource="entity\User.xml"/>
     </mappers>
 </configuration>

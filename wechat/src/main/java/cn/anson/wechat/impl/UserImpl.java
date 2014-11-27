@@ -15,7 +15,7 @@ public class UserImpl {
     private UserMapper userMapper;
    
     public User find(int id) {
-       return userMapper.selectUser(id);
+       return userMapper.selectUserByID(id);
     }
  
     public List<User> find() {

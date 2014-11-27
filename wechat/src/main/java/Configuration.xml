@@ -18,7 +18,11 @@
         </environment>
     </environments>
     
+<!--     <mappers> -->
+<!--         <mapper resource="User.xml"/> -->
+<!--     </mappers> -->
+<!-- 对目录下面的所有Mapper接口都进行注册 需配合注解 -->
     <mappers>
-        <mapper resource="entity\User.xml"/>
+       	<package name="cn.anson.wechat.mapper"/>
     </mappers>
 </configuration>

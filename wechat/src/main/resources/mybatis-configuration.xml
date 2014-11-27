@@ -2,6 +2,9 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<!-- 	<mappers> -->
+<!--         <mapper resource="entity/User.xml"/> -->
+<!--     </mappers> -->
 	<!-- 对目录下面的所有Mapper接口都进行注册 需配合注解 -->
     <mappers>
        <package name="cn.anson.wechat.mapper"/>

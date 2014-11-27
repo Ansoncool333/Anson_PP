@@ -17,6 +17,7 @@
         <context:include-filter type="regex" expression=".*" />
     </context:component-scan>
     <!-- Service注入 end-->
+    
     <bean id="sysConfig" class="cn.anson.wechat.util.SysConfig">
         <constructor-arg value="#{@props}"/>
     </bean>
@@ -42,7 +43,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="cn.anson.wechat.entity" />
-		<property name="configLocation" value="classpath:mybatis-configuration.xml"/>
+		<property name="configLocation" value="/WEB-INF/mybatis-configuration.xml"/>
 		<!-- <property name="mapperLocations" value="classpath*:cn/com/ecointel/roomyi/authority/persistence/*.xml" /> -->
 	</bean>
 	
@@ -53,7 +54,9 @@
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" /><!-- 单数据源可不定义-->
 	</bean>
 	
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" p:sqlSessionFactory-ref="sqlSessionFactory"/>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" >
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
     
     <bean class="cn.anson.wechat.util.SpringCtxUtils"/>
     

@@ -29,7 +29,7 @@ public class UserService {
     public static void main(String[] args) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
-        User user = (User) session.selectOne("cn.anson.wechat.mapper.UserMapper.selectUser", 1);
+        User user = (User) session.selectOne("cn.anson.wechat.mapper.UserMapper.selectUserByID", 1);
 //        System.out.println(user.getUserAddress());
         System.out.println(user.getName());
         } finally {

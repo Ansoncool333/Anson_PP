@@ -1,16 +1,20 @@
 package cn.anson.wechat.util;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,6 +31,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class Env {
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private PageContext pageContext;
     private ServletContext servletContext;
     private Map<String, Object> firstLevelCache = new HashMap<String, Object>();
 
@@ -44,6 +49,12 @@ public class Env {
     }
     public void setResponse(HttpServletResponse response) {
         this.response = response;
+    }
+    public PageContext getPageContext() {
+        return pageContext;
+    }
+    public void setPageContext(PageContext pageContext) {
+        this.pageContext = pageContext;
     }
     public ServletContext getServletContext() {
         return servletContext;
@@ -103,6 +114,53 @@ public class Env {
     }
     public void deleteCache(String key) {
         firstLevelCache.remove(key);
+    }
+
+    /*
+     * Cache listener/monitor and database listener/monitor part
+     */
+    long startTime = System.currentTimeMillis();
+    int databaseReadTimes = 0;
+    int databaseUpdateTimes = 0;
+    int cacheReadTimes = 0;
+    int cacheUpdateTimes = 0;
+    public int getDbRead() {
+        return databaseReadTimes;
+    }
+    public int getCacheRead() {
+        return cacheReadTimes;
+    }
+    public int getDbUpdate() {
+        return databaseUpdateTimes;
+    }
+    public int getCacheUpdate() {
+        return cacheUpdateTimes;
+    }
+
+
+	static final Pattern REQ_ENCODING_PATTERN = Pattern.compile("(?:&|)req(?:-|_)enc=([^&]+)");
+	static final Pattern RESP_ENCODING_PATTERN = Pattern.compile("(?:&|)resp(?:-|_)enc=([^&]+)");
+    public void setCharacterEncoding() {
+        String queryString = request.getQueryString();
+        if (queryString == null) return;
+        Matcher m = REQ_ENCODING_PATTERN.matcher(queryString);
+		if (m.find()) {
+            try {
+                request.setCharacterEncoding(m.group(1));
+            } catch (UnsupportedEncodingException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        Matcher m2 = RESP_ENCODING_PATTERN.matcher(queryString);
+        if (m2.find()) {
+            response.setCharacterEncoding(m2.group(1));
+        }
+        /*
+        String ct = response.getContentType();
+        if (ct.indexOf("charset") == -1) {
+            response.setContentType(ct + "; charset=" + response.getCharacterEncoding());
+        }
+         */
     }
 
     public static String escapeJavaScript(String s) {

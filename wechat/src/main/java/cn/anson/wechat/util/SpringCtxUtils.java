@@ -12,7 +12,7 @@ public class SpringCtxUtils implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-//    @Override
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
         SpringCtxUtils.applicationContext = applicationContext;

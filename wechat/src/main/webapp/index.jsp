@@ -6,12 +6,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	Env env = EnvUtils.getEnv();
-	TestService ts = env.getBean(TestService.class);
+	UserService ts = env.getBean(UserService.class);
+// 	UserService ts = new UserService();
 	
 	pageContext.setAttribute("name", ts.testSelect());
 %>
 <html>
 <body>
-<h2>Hello World!</h2>
+<h2>${name}</h2>
 </body>
 </html>

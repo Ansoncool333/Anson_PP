@@ -9,8 +9,10 @@ import cn.anson.wechat.util.SpringCtxUtils;
 
 public class TestService {
 	public String testSelect(){
-		WechatOrm orm = new WechatOrm();
-		SqlSession session = orm.getSession().openSession();
+//		WechatOrm orm = new WechatOrm();
+//		WechatOrm orm = SpringCtxUtils.getBean(WechatOrm.class);
+		SqlSession session = (new WechatOrm()).getSession().openSession();
+//		SqlSession session = orm.getSession().openSession();
 		 try {
 		        User user = (User) session.selectOne("cn.anson.wechat.mapper.UserMapper.selectUserByID", 1);
 //		        System.out.println(user.getUserAddress());

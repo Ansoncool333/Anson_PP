@@ -9,6 +9,7 @@ package cn.anson.wechat.util;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,12 +19,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
  *
- * @author xhchen
+ * @author Anson Chan (cp from geli)
  */
 public class EnvFilter implements Filter {
     static final Log LOG = LogFactory.getLog(EnvFilter.class);
@@ -31,17 +33,20 @@ public class EnvFilter implements Filter {
     ServletContext servletContext;
     Map<Env, String> envMap = new ConcurrentHashMap<Env, String>();
 
+    @Override
     public void destroy() {
         servletContext.removeAttribute("_envSet");
         servletContext = null;
         envMap.clear();
         envMap = null;
     }
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         servletContext = filterConfig.getServletContext();
         servletContext.setAttribute("_envSet", envMap.keySet());
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         long start = System.currentTimeMillis();
@@ -58,11 +63,11 @@ public class EnvFilter implements Filter {
 
         } finally {
             long end = System.currentTimeMillis();
-//            if (end - start > 10000) {
+            if (end - start > 10000) {
 //                LOG.warn(env.getLogString());
-//            } else {
+            } else {
 //                LOG.info(env.getLogString());
-//            }
+            }
             envMap.remove(env);
             EnvUtils.removeEnv();
         }
